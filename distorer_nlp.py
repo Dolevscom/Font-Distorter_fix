@@ -12,8 +12,8 @@ from io import BytesIO
 
 
 
-# Initialize OpenAI API with your API key
-openai.api_key = "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"
+# Initialize OpenAI API key
+openai.api_key = " ->>>>my api key"
 
 # Set the path for tesseract
 pytesseract.pytesseract.tesseract_cmd = '/opt/homebrew/bin/tesseract'
@@ -104,7 +104,7 @@ def identify_font(img_gray):
     print(f"Top predicted font: {top_font}")
     return top_font
 
-def get_alternative_fonts(top_font):
+def get_alternative_fonts(top_font, text_extracted):
     """
     Fetches a list of alternative fonts that are visually distinct from the provided top_font.
 
@@ -117,8 +117,9 @@ def get_alternative_fonts(top_font):
 
     prompt = (
             f"Give me the 5 fonts that are the most different from {top_font}, "
-            "focusing on characteristics like weight, style, and personality. "
-            "Return them as an array of font names, ensuring they are included in Google Fonts."
+            f"focusing on characteristics like weight, style, and personality. "
+            f"refferin also to the context of the text extracted from the image, {text_extracted}."
+            f"Return them as an array of font names, ensuring they are included in Google Fonts."
         )
 
     try:
@@ -262,7 +263,7 @@ if uploaded_file is not None:
             # Font replacement
             median_y = calculate_median_y(boxes, img_color.height)
             top_font = identify_font(img_gray)
-            alternative_fonts = get_alternative_fonts(top_font)
+            alternative_fonts = get_alternative_fonts(top_font,text)
             
             # Find the first valid font path
             font_path = find_first_valid_font(alternative_fonts, google_fonts_directory)
@@ -279,85 +280,4 @@ if uploaded_file is not None:
         st.success("Image processing complete!")
 
 
-#################################################################################################################
-
-# # Initialize the main application window
-# root = tk.Tk()
-# root.title("Image Text Remover and Font Distorter")
-# root.geometry("800x600")
-# root.configure(bg="white")
-
-# # Customize button appearance
-# button_style = {"bg": "#4CAF50", "fg": "white", "font": ("Arial", 12, "bold"), "padx": 10, "pady": 5}
-
-# # Upload button
-# upload_button = tk.Button(root, text="Upload Image", command=upload_image, **button_style)
-# upload_button.pack(pady=20)
-
-# # Label to display uploaded image
-# uploaded_image_label = Label(root, bg="black")
-# uploaded_image_label.pack()
-
-# # Process button
-# process_button = tk.Button(root, text="Process Image", command=process_image, **button_style)
-# process_button.pack(pady=20)
-
-# # Label to display result image
-# result_image_label = Label(root, bg="black")
-# result_image_label.pack()
-
-# # Start the GUI event loop
-# root.mainloop()
-
-# # Start the GUI event loop
-# root.mainloop()
-
- #################################################################################################################
-
-# def main():
-#     # image_path = "assets/pics/b_of_a_logo.jpg"
-#     # image_path = "/Users/dolevsmac/Desktop/FontDistorter/FontDistorter/assets/pics/google2.0.0.1441125613.jpg"
-#     # image_path = "/Users/dolevsmac/Desktop/FontDistorter/FontDistorter/assets/pics/mcdonald's-logo-design-template-c03c253e9d3c73bacdf4d3499e6a0b72_screen.jpg"
-    
-#     # Load images
-#     img_color, img_gray = load_image(image_path)
-
-#     # Extract text and bounding boxes
-#     text, boxes = extract_text_and_boxes(img_gray)
-
-#     # Remove text using white rectangles
-#     # img_color = remove_text_with_rectangles(img_color, boxes)
-#     img_color  = inpaint_content_aware_fill(image_path, boxes)
-
-#     # Calculate median Y position
-#     median_y = calculate_median_y(boxes, img_color.height)
-#     print(f"Calculated median Y position: {median_y}")
-
-#     # Identify the font used in the image
-#     top_font = identify_font(img_gray)
-
-#     # Get an alternative font suggestion from OpenAI
-#     alternative_font = get_alternative_fonts(top_font)
-#     if not alternative_font:
-#         alternative_font = "Courier New"
-
-#     # Find the font file path for the alternative font
-#     font_path = find_font_file(alternative_font, google_fonts_directory)
-#     if not font_path:
-#         font_path = "/path/to/fallback/font.ttf"
-
-#     # Apply the new font on the image
-#     apply_new_font(img_color, boxes, font_path, median_y)
-
-#     # GUI setup
-#     root = tk.Tk()
-#     root.title("Image Text Remover and Font Distorter")
-#     root.geometry("800x600")
-
-#     # Google Fonts directory path (update as needed)
-#     google_fonts_directory = "/path/to/your/fonts"
-
-
-
-# if __name__ == "__main__":
-#     main()
+# os.system("streamlit run distorer_nlp.py")
